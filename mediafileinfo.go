@@ -1,7 +1,7 @@
 package main
 
 /*
-#cgo LDFLAGS: -L.  -lavformat -lavcodec -lavutil
+#cgo LDFLAGS: -L. -lavformat -lavcodec -lavutil
 #include "mediainfowrapper.h"
 #include <stdlib.h>
 */
@@ -12,32 +12,51 @@ import (
 )
 
 type MediaInfo struct {
-	Filename       string
-	Duration       int64
-	NbStreams      uint
-	FormatName     string
-	FormatLongName string
-	// Add more fields if needed
+	ctx *C.AVFormatContext
 }
 
+// GetMediaInfo opens a media file and returns a MediaInfo.
 func GetMediaInfo(filename string) (*MediaInfo, error) {
 	cfilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cfilename))
 
-	cinfo := C.Get_media_info(cfilename)
-	if cinfo == nil {
-		return nil, fmt.Errorf("error in Get_Media_Info") // define this error as needed
+	ctx := C.Get_avformat_context(cfilename)
+	if ctx == nil {
+		return nil, fmt.Errorf("could not open file: %s", filename)
 	}
-	defer C.Free_media_info(cinfo)
-
-	goInfo := &MediaInfo{
-		Filename:       C.GoString(&cinfo.filename[0]),
-		Duration:       int64(cinfo.duration),
-		NbStreams:      uint(cinfo.nb_streams),
-		FormatName:     C.GoString(&cinfo.format_name[0]),
-		FormatLongName: C.GoString(&cinfo.format_long_name[0]),
-	}
-	// Populate more fields as needed.
-
-	return goInfo, nil
+	return &MediaInfo{ctx: ctx}, nil
 }
+
+// Close releases the AVFormatContext.
+func (mc *MediaInfo) Close() {
+	if mc.ctx != nil {
+		C.Free_avformat_context(mc.ctx)
+		mc.ctx = nil
+	}
+}
+
+// NbStreams returns the number of streams.
+func (mc *MediaInfo) NbStreams() int {
+	if mc.ctx == nil {
+		return 0
+	}
+	return int(C.Get_avstreams(mc.ctx))
+}
+
+// Duration returns the duration in AV_TIME_BASE units.
+func (mc *MediaInfo) Duration() int64 {
+	if mc.ctx == nil {
+		return 0
+	}
+	return int64(C.Get_duration(mc.ctx))
+}
+
+// FormatName returns the short name of the format.
+func (mc *MediaInfo) FormatName() string {
+	if mc.ctx == nil {
+		return ""
+	}
+	return C.GoString(C.Get_format_name(mc.ctx))
+}
+
+// Example: Add more helpers as needed.

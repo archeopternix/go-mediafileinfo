@@ -1,31 +1,22 @@
-#ifndef FFMPEG_MEDIA_INFO_H
-#define FFMPEG_MEDIA_INFO_H
+#ifndef MEDIAINFOWRAPPER_H
+#define MEDIAINFOWRAPPER_H
 
 #include <libavformat/avformat.h>
 
-typedef struct {
-    int stream_index;
-    enum AVMediaType codec_type;
-    char codec_name[64];
-    int width, height;        // For video
-    int sample_rate;          // For audio
-    int channels;             // For audio
-    int field_order;          // For video: AVFieldOrder, -1 if not applicable
-    AVCodecParameters *codecpar_copy;
-} StreamInfo;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef struct {
-    char filename[512];
-    int64_t duration;
-    unsigned int nb_streams;
-    char format_name[128];
-    char format_long_name[128];
-    StreamInfo *streams;
-} MediaInfo;
+AVFormatContext* Get_avformat_context(const char* filename);
+void Free_avformat_context(AVFormatContext* ctx);
 
-MediaInfo *Get_media_info(const char *filename);
-void Free_media_info(MediaInfo *info);
+// Optionally, helper functions to retrieve fields
+int Get_avstreams(AVFormatContext* ctx);
+int64_t Get_duration(AVFormatContext* ctx);
+const char* Get_format_name(AVFormatContext* ctx);
 
-const char *Field_order_to_str(int field_order);
+#ifdef __cplusplus
+}
+#endif
 
-#endif // FFMPEG_MEDIA_INFO_H
+#endif // MEDIAINFOWRAPPER_H

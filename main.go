@@ -14,8 +14,8 @@ func main() {
 		return
 	}
 
-	fmt.Printf("File: %s\n", info.Filename)
+	// fmt.Printf("File: %s\n", info.Filename)
 	fmt.Printf("Duration: %d\n", info.Duration)
 	fmt.Printf("Number of streams: %d\n", info.NbStreams)
-	fmt.Printf("Format: %s (%s)\n", info.FormatName, info.FormatLongName)
+	// fmt.Printf("Format: %s (%s)\n", info.FormatName, info.FormatLongName)
 }
