@@ -23,9 +23,9 @@ typedef struct {
     StreamInfo *streams;
 } MediaInfo;
 
-MediaInfo *get_media_info(const char *filename);
-void free_media_info(MediaInfo *info);
+MediaInfo *Get_media_info(const char *filename);
+void Free_media_info(MediaInfo *info);
 
-const char *field_order_to_str(int field_order);
+const char *Field_order_to_str(int field_order);
 
 #endif // FFMPEG_MEDIA_INFO_H

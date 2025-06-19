@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-MediaInfo *get_media_info(const char *filename) {
+MediaInfo *Get_media_info(const char *filename) {
     AVFormatContext *fmt_ctx = NULL;
     if (avformat_open_input(&fmt_ctx, filename, NULL, NULL) < 0)
         return NULL;
@@ -51,7 +51,7 @@ MediaInfo *get_media_info(const char *filename) {
     return info;
 }
 
-void free_media_info(MediaInfo *info) {
+void Free_media_info(MediaInfo *info) {
     if (!info) return;
     if (info->streams) {
         for (unsigned int i = 0; i < info->nb_streams; i++) {
@@ -64,7 +64,7 @@ void free_media_info(MediaInfo *info) {
 }
 
 
-const char *field_order_to_str(int field_order) {
+const char *Field_order_to_str(int field_order) {
     switch (field_order) {
         case 0: return "Unknown";
         case 1: return "Progressive";
