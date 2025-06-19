@@ -24,7 +24,7 @@ void Free_avformat_context(AVFormatContext* ctx) {
 }
 
 // Helper: number of streams
-int Get_avstreams(AVFormatContext* ctx) {
+int Get_stream_count(AVFormatContext* ctx) {
     return ctx ? ctx->nb_streams : -1;
 }
 
@@ -36,4 +36,13 @@ int64_t Get_duration(AVFormatContext* ctx) {
 // Helper: format name
 const char* Get_format_name(AVFormatContext* ctx) {
     return (ctx && ctx->iformat && ctx->iformat->name) ? ctx->iformat->name : "";
+}
+
+// Gibt einen Zeiger auf den AVStream mit dem angegebenen Index zurück.
+// Gibt NULL zurück, falls der Index ungültig ist.
+AVStream* Get_stream_by_index(AVFormatContext *fmt_ctx, int index) {
+    if (!fmt_ctx || index < 0 || index >= fmt_ctx->nb_streams) {
+        return NULL;
+    }
+    return fmt_ctx->streams[index];
 }
