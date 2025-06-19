@@ -1,7 +1,7 @@
 // avwrapper.c
-#include "avwrapper.h"
-#include <libavformat/avformat.h>
+#include "avparams.h"
 #include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
 #include <stdio.h>
 
 // Returns a pointer to AVCodecParameters of the first video stream.

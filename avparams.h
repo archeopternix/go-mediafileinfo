@@ -1,6 +1,6 @@
 // avwrapper.h
-#ifndef AVWRAPPER_H
-#define AVWRAPPER_H
+#ifndef AVPARAMS_H
+#define AVPARAMS_H
 
 #include <libavcodec/avcodec.h>
 

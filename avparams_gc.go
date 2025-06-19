@@ -2,6 +2,9 @@ package main
 
 /*
 #cgo pkg-config: libavcodec
+#cgo LDFLAGS: -lavcodec
+#cgo CFLAGS:  -I/usr/include/x86_64-linux-gnu
+
 #include "avparams.h"
 */
 import "C"
@@ -14,8 +17,8 @@ type AVCodecParameters struct {
 	ptr *C.struct_AVCodecParameters
 }
 
-func NewAVCodecParameters() *AVCodecParameters {
-	p := C.create_codec_parameters()
+func NewAVCodecParameters(file string) *AVCodecParameters {
+	p := C.get_video_codec_parameters(file)
 	if p == nil {
 		return nil
 	}
@@ -104,11 +107,13 @@ func (w *AVCodecParameters) SeekPreroll() int {
 	return int(w.ptr.seek_preroll)
 }
 
+/*
 // CodecName gets codec name via C-Helper
 func (w *AVCodecParameters) CodecName() string {
-	cstr := C.get_codec_name(w.ptr.codec_id)
+	cstr := C. get_codec_name(w.ptr.codec_id)
 	return C.GoString(cstr)
 }
+*/
 
 // Ptr expose raw pointer when needed
 func (w *AVCodecParameters) Ptr() *C.struct_AVCodecParameters {

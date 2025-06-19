@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	p := NewAVCodecParameters()
+	p := NewAVCodecParameters("/home/archeopternix/Videos/DSCN1001.MOV")
 	if p == nil {
 		panic("allocation failed")
 	}
