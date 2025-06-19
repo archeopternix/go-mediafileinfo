@@ -1,7 +1,7 @@
-package mediainfo
+package main
 
 /*
-#cgo LDFLAGS: -L. -lmediainfowrapper -lavformat -lavcodec -lavutil
+#cgo LDFLAGS: -L.  -lavformat -lavcodec -lavutil
 #include "mediainfowrapper.h"
 #include <stdlib.h>
 */
@@ -20,7 +20,7 @@ type MediaInfo struct {
 	// Add more fields if needed
 }
 
-func Get_Media_Info(filename string) (*MediaInfo, error) {
+func GetMediaInfo(filename string) (*MediaInfo, error) {
 	cfilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cfilename))
 
