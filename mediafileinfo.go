@@ -130,6 +130,8 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 		Streams:  streams,
 		Duration: int64(ctx.duration),
 		BitRate:  int64(ctx.bit_rate),
+		Format: C.GoString(ctx.iformat.name),
+		FormatName: C.GoString(ctx.iformat.long_name),
 	}
 
 	if formatCtx == nil {
