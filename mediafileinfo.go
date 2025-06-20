@@ -12,63 +12,69 @@ import (
 	"unsafe"
 )
 
-// AVFormatContext repräsentiert das Format-Kontext-Objekt wie in FFmpeg (vereinfachte Abbildung).
+// AVFormatContext represents the format context for a media file, mirroring FFmpeg's AVFormatContext.
+// See: https://ffmpeg.org/doxygen/trunk/structAVFormatContext.html
 type AVFormatContext struct {
-	Filename       string
-	Streams        []AVStream
-	StartTime      int64
-	Duration       int64
-	BitRate        int64
-	FormatName     string
-	FormatLongName string
+    Filename       string      // Name of the media file (AVFormatContext->url)
+    Streams        []AVStream  // List of streams present in the file (AVFormatContext->streams)
+    StartTime      int64       // Start time of the stream in AV_TIME_BASE units (AVFormatContext->start_time)
+    Duration       int64       // Duration of the media in AV_TIME_BASE units (AVFormatContext->duration)
+    BitRate        int64       // Total bitrate of the media file (AVFormatContext->bit_rate)
+    FormatName     string      // Short name of the format (AVInputFormat->name)
+    FormatLongName string      // Long name of the format (AVInputFormat->long_name)
 }
 
-// AVStream repräsentiert einen Stream wie in FFmpeg (vereinfachte Abbildung).
+// AVStream represents a single stream (audio, video, subtitles, etc.) in a media file, similar to FFmpeg's AVStream.
+// See: https://ffmpeg.org/doxygen/trunk/structAVStream.html
 type AVStream struct {
-	Index             int
-	ID                int
-	CodecParameters   *AVCodecParameters
-	TimeBase          AVRational
-	Duration          int64
-	SampleAspectRatio AVRational
-	AverageFrameRate  AVRational
+    Index             int               // Stream index in the media file (AVStream->index)
+    ID                int               // Stream ID (AVStream->id)
+    CodecParameters   *AVCodecParameters// Codec parameters for this stream (AVStream->codecpar)
+    TimeBase          AVRational        // Fundamental unit of time (AVStream->time_base)
+    Duration          int64             // Duration of the stream (AVStream->duration)
+    SampleAspectRatio AVRational        // Sample aspect ratio (AVStream->sample_aspect_ratio)
+    AverageFrameRate  AVRational        // Average frame rate (AVStream->avg_frame_rate)
 }
 
+// AVRational represents a rational number, as used in FFmpeg for time bases and aspect ratios.
+// See: https://ffmpeg.org/doxygen/trunk/structAVRational.html
 type AVRational struct {
-	Num int
-	Den int
+    Num int   // Numerator
+    Den int   // Denominator
 }
 
+// AVCodecParameters stores codec parameters, equivalent to FFmpeg's AVCodecParameters.
+// See: https://ffmpeg.org/doxygen/trunk/structAVCodecParameters.html
 type AVCodecParameters struct {
-	CodecType          int        // General type of the encoded data.
-	CodecID            int        // Specific type of the encoded data (the codec used).
-	CodecTag           uint32     // Additional information about the codec (corresponds to the AVI FOURCC).
-	ExtradataSize      int        // Size of the extradata content in bytes.
-	NbCodedSideData    int        // Amount of entries in coded_side_data.
-	Format             int        //
-	BitRate            int64      // The average bitrate of the encoded data (in bits per second).
-	BitsPerCodedSample int        // The number of bits per sample in the codedwords.
-	BitsPerRawSample   int        // This is the number of valid bits in each output sample.
-	Profile            int        // Codec-specific bitstream restrictions that the stream conforms to.
-	Level              int        //
-	Width              int        // Video only.
-	Height             int        //
-	AspectRatio        AVRational // Video only.
-	FieldOrder         int        // Video only.
-	ColorRange         int        // Video only.
-	ColorPrimaries     int32      //
-	ColorTrc           int32      //
-	ColorSpace         int32      //
-	ChromaLocation     int32      //
-	ChannelLayout      int64
-	Channels           int
-	VideoDelay         int // Video only.
-	SampleRate         int // Audio only.
-	BlockAlign         int // Audio only.
-	FrameSize          int // Audio only.
-	InitialPadding     int // Audio only.
-	TrailingPadding    int // Audio only.
-	SeekPreroll        int // Audio only.
+    CodecType          int        // General type of the encoded data (AVMEDIA_TYPE_* in FFmpeg)
+    CodecID            int        // Specific codec ID (AVCodecID)
+    CodecTag           uint32     // Additional information about the codec (codec_tag/fourcc)
+    ExtradataSize      int        // Size of extra binary data (extradata_size)
+    NbCodedSideData    int        // Number of side data elements (nb_coded_side_data)
+    Format             int        // Sample format (audio), pixel format (video)
+    BitRate            int64      // Average bitrate (bit_rate)
+    BitsPerCodedSample int        // Bits per coded sample (bits_per_coded_sample)
+    BitsPerRawSample   int        // Bits per raw sample (bits_per_raw_sample)
+    Profile            int        // Codec-specific profile (profile)
+    Level              int        // Codec-specific level (level)
+    Width              int        // Width of video (width)
+    Height             int        // Height of video (height)
+    AspectRatio        AVRational // Aspect ratio (sample_aspect_ratio)
+    FieldOrder         int        // Field order (field_order)
+    ColorRange         int        // Color range (color_range)
+    ColorPrimaries     int32      // Color primaries (color_primaries)
+    ColorTrc           int32      // Color transfer characteristic (color_trc)
+    ColorSpace         int32      // Color space (color_space)
+    ChromaLocation     int32      // Chroma location (chroma_location)
+    ChannelLayout      int64      // Channel layout mask (channel_layout)
+    Channels           int        // Number of audio channels (channels)
+    VideoDelay         int        // Video delay (video_delay)
+    SampleRate         int        // Audio sample rate (sample_rate)
+    BlockAlign         int        // Block alignment (block_align)
+    FrameSize          int        // Audio frame size (frame_size)
+    InitialPadding     int        // Initial padding (initial_padding)
+    TrailingPadding    int        // Trailing padding (trailing_padding)
+    SeekPreroll        int        // Seek preroll (seek_preroll)
 }
 
 func PrintAVContextJSON(params *AVFormatContext) error {
