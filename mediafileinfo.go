@@ -1,3 +1,11 @@
+// Package main provides Go functions and structures for extracting
+// media file information linking to the FFmpeg libraries by cgo. It defines types that mirror
+// FFmpeg's AVFormatContext, AVStream, and AVCodecParameters, and offers a function
+// to retrieve media metadata:
+//
+//	GetMediaInfo()
+//
+// and a function to print all the mediafile metainfo in JSON format.
 package main
 
 /*
@@ -16,6 +24,8 @@ import (
 // See: https://ffmpeg.org/doxygen/trunk/structAVFormatContext.html
 type AVFormatContext struct {
 	Filename       string     // Name of the media file.
+	FileExt        string     // File externsion e.g. mp4
+	FileSize       int64      // File size
 	Streams        []AVStream // List of all streams in the file.
 	StartTime      int64      // Start time of the stream in AV_TIME_BASE units.
 	Duration       int64      // Duration of the stream in AV_TIME_BASE units.
@@ -134,12 +144,12 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 
 	// Map to FormatContext
 	formatCtx := &AVFormatContext{
-		Filename:   C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
-		Streams:    streams,
-		Duration:   int64(ctx.duration),
-		BitRate:    int64(ctx.bit_rate),
-		Format:     C.GoString(ctx.iformat.name),
-		FormatName: C.GoString(ctx.iformat.long_name),
+		Filename:       C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
+		Streams:        streams,
+		Duration:       int64(ctx.duration),
+		BitRate:        int64(ctx.bit_rate),
+		FormatName:     C.GoString(ctx.iformat.name),
+		FormatLongName: C.GoString(ctx.iformat.long_name),
 	}
 
 	if formatCtx == nil {
