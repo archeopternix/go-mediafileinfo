@@ -15,25 +15,25 @@ import (
 // AVFormatContext represents the format context for a media file, mirroring FFmpeg's AVFormatContext.
 // See: https://ffmpeg.org/doxygen/trunk/structAVFormatContext.html
 type AVFormatContext struct {
-	Filename       string     // Name of the media file (AVFormatContext->url)
-	Streams        []AVStream // List of streams present in the file (AVFormatContext->streams)
-	StartTime      int64      // Start time of the stream in AV_TIME_BASE units (AVFormatContext->start_time)
-	Duration       int64      // Duration of the media in AV_TIME_BASE units (AVFormatContext->duration)
-	BitRate        int64      // Total bitrate of the media file (AVFormatContext->bit_rate)
-	FormatName     string     // Short name of the format (AVInputFormat->name)
-	FormatLongName string     // Long name of the format (AVInputFormat->long_name)
+	Filename       string     // Name of the media file.
+	Streams        []AVStream // List of all streams in the file.
+	StartTime      int64      // Start time of the stream in AV_TIME_BASE units.
+	Duration       int64      // Duration of the stream in AV_TIME_BASE units.
+	BitRate        int64      // Total bitrate of the file in bits per second.
+	FormatName     string     // Short name of the format.
+	FormatLongName string     // Long name of the format.
 }
 
 // AVStream represents a single stream (audio, video, subtitles, etc.) in a media file, similar to FFmpeg's AVStream.
 // See: https://ffmpeg.org/doxygen/trunk/structAVStream.html
 type AVStream struct {
-	Index             int                // Stream index in the media file (AVStream->index)
-	ID                int                // Stream ID (AVStream->id)
-	CodecParameters   *AVCodecParameters // Codec parameters for this stream (AVStream->codecpar)
-	TimeBase          AVRational         // Fundamental unit of time (AVStream->time_base)
-	Duration          int64              // Duration of the stream (AVStream->duration)
-	SampleAspectRatio AVRational         // Sample aspect ratio (AVStream->sample_aspect_ratio)
-	AverageFrameRate  AVRational         // Average frame rate (AVStream->avg_frame_rate)
+	Index             int                // Stream index in AVFormatContext.
+	ID                int                // Format-specific stream ID.
+	CodecParameters   *AVCodecParameters // Codec parameters for this stream.
+	TimeBase          AVRational         // Time base for the stream timestamps.
+	Duration          int64              // Duration of the stream in stream time_base units.
+	SampleAspectRatio AVRational         // Sample aspect ratio (width/height) for video.
+	AverageFrameRate  AVRational         // Average frame rate.
 }
 
 // AVRational represents a rational number, as used in FFmpeg for time bases and aspect ratios.
@@ -43,38 +43,38 @@ type AVRational struct {
 	Den int // Denominator
 }
 
-// AVCodecParameters stores codec parameters, equivalent to FFmpeg's AVCodecParameters.
-// See: https://ffmpeg.org/doxygen/trunk/structAVCodecParameters.html
+// AVCodecParameters describes the properties of a single codec context.
+// Based on FFmpeg's AVCodecParameters (see avcodec.h).
 type AVCodecParameters struct {
-	CodecType          int        // General type of the encoded data (AVMEDIA_TYPE_* in FFmpeg)
-	CodecID            int        // Specific codec ID (AVCodecID)
-	CodecTag           uint32     // Additional information about the codec (codec_tag/fourcc)
-	ExtradataSize      int        // Size of extra binary data (extradata_size)
-	NbCodedSideData    int        // Number of side data elements (nb_coded_side_data)
-	Format             int        // Sample format (audio), pixel format (video)
-	BitRate            int64      // Average bitrate (bit_rate)
-	BitsPerCodedSample int        // Bits per coded sample (bits_per_coded_sample)
-	BitsPerRawSample   int        // Bits per raw sample (bits_per_raw_sample)
-	Profile            int        // Codec-specific profile (profile)
-	Level              int        // Codec-specific level (level)
-	Width              int        // Width of video (width)
-	Height             int        // Height of video (height)
-	AspectRatio        AVRational // Aspect ratio (sample_aspect_ratio)
-	FieldOrder         int        // Field order (field_order)
-	ColorRange         int        // Color range (color_range)
-	ColorPrimaries     int32      // Color primaries (color_primaries)
-	ColorTrc           int32      // Color transfer characteristic (color_trc)
-	ColorSpace         int32      // Color space (color_space)
-	ChromaLocation     int32      // Chroma location (chroma_location)
-	ChannelLayout      int64      // Channel layout mask (channel_layout)
-	Channels           int        // Number of audio channels (channels)
-	VideoDelay         int        // Video delay (video_delay)
-	SampleRate         int        // Audio sample rate (sample_rate)
-	BlockAlign         int        // Block alignment (block_align)
-	FrameSize          int        // Audio frame size (frame_size)
-	InitialPadding     int        // Initial padding (initial_padding)
-	TrailingPadding    int        // Trailing padding (trailing_padding)
-	SeekPreroll        int        // Seek preroll (seek_preroll)
+	CodecType          int        // General type of the encoded data (see AVMediaType).
+	CodecID            int        // Specific type of the encoded data (the codec used).
+	CodecTag           uint32     // Additional information about the codec (corresponds to the AVI FOURCC).
+	ExtradataSize      int        // Size of the extradata content in bytes.
+	NbCodedSideData    int        // Amount of entries in coded_side_data.
+	Format             int        // The pixel or sample format.
+	BitRate            int64      // The average bitrate of the encoded data (in bits per second).
+	BitsPerCodedSample int        // The number of bits per sample in the codedwords.
+	BitsPerRawSample   int        // This is the number of valid bits in each output sample.
+	Profile            int        // Codec-specific bitstream restrictions that the stream conforms to.
+	Level              int        // Codec-specific level.
+	Width              int        // Video only: width of the video frame.
+	Height             int        // Video only: height of the video frame.
+	AspectRatio        AVRational // Video only: sample aspect ratio.
+	FieldOrder         int        // Video only: field order.
+	ColorRange         int        // Video only: color range.
+	ColorPrimaries     int32      // Video only: color primaries.
+	ColorTrc           int32      // Video only: color transfer characteristic.
+	ColorSpace         int32      // Video only: YUV colorspace type.
+	ChromaLocation     int32      // Video only: location of chroma samples.
+	ChannelLayout      int64      // Audio only: channel layout mask.
+	Channels           int        // Audio only: number of audio channels.
+	VideoDelay         int        // Video only: number of frames the decoder should delay.
+	SampleRate         int        // Audio only: sampling rate.
+	BlockAlign         int        // Audio only: block alignment.
+	FrameSize          int        // Audio only: audio frame size.
+	InitialPadding     int        // Audio only: initial padding.
+	TrailingPadding    int        // Audio only: trailing padding.
+	SeekPreroll        int        // Audio only: seek preroll.
 }
 
 // PrintAVContextJSON prints the AVFormatContext struct as formatted JSON to stdout.
@@ -88,7 +88,7 @@ func PrintAVContextJSON(params *AVFormatContext) error {
 	return nil
 }
 
-// GetMediaInfo opens a media file and returns an AVFormatContext struct.
+// GetMediaInfo opens a media file and returns a MediaInfo.
 func GetMediaInfo(filename string) (*AVFormatContext, error) {
 	cfilename := C.CString(filename)
 	defer C.free(unsafe.Pointer(cfilename))
@@ -118,7 +118,7 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 			Format:        int(s.codecpar.format),
 			AspectRatio:   AVRational{Num: int(s.codecpar.sample_aspect_ratio.num), Den: int(s.codecpar.sample_aspect_ratio.den)},
 			FieldOrder:    int(s.codecpar.field_order),
-			// add more fields if needed
+			// ggf. weitere Felder
 		}
 		stream := AVStream{
 			Index:             int(s.index),
@@ -134,12 +134,10 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 
 	// Map to FormatContext
 	formatCtx := &AVFormatContext{
-		Filename:   C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
-		Streams:    streams,
-		Duration:   int64(ctx.duration),
-		BitRate:    int64(ctx.bit_rate),
-		Format:     C.GoString(ctx.iformat.name),
-		FormatName: C.GoString(ctx.iformat.long_name),
+		Filename: C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
+		Streams:  streams,
+		Duration: int64(ctx.duration),
+		BitRate:  int64(ctx.bit_rate),
 	}
 
 	if formatCtx == nil {
