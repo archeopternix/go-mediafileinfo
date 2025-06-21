@@ -34,7 +34,7 @@ func TestFormatBytes(t *testing.T) {
 
 func TestFormatDurationMS(t *testing.T) {
 	tests := []struct {
-		in   int64
+		in   uint64
 		want string
 	}{
 		{0, "0.000"},

@@ -33,9 +33,9 @@ type AVFormatContext struct {
 	FileSizeText   string     // File size in MB or GB
 	Streams        []AVStream // List of all streams in the file.
 	StartTime      int64      // Start time of the stream in AV_TIME_BASE units.
-	Duration       int64      // Duration of the stream in AV_TIME_BASE units.
+	Duration       uint64     // Duration of the stream in AV_TIME_BASE units.
 	DurationText   string     // duration in hrs:min:sec.ms
-	BitRate        int64      // Total bitrate of the file in bits per second.
+	BitRate        uint64     // Total bitrate of the file in bits per second.
 	FormatName     string     // Short name of the format.
 	FormatLongName string     // Long name of the format.
 }
@@ -48,6 +48,7 @@ type AVStream struct {
 	CodecParameters   *AVCodecParameters // Codec parameters for this stream.
 	TimeBase          AVRational         // Time base for the stream timestamps.
 	Duration          int64              // Duration of the stream in stream time_base units.
+	DurationText      string             // duration in hrs:min:sec.ms
 	SampleAspectRatio AVRational         // Sample aspect ratio (width/height) for video.
 	AverageFrameRate  AVRational         // Average frame rate.
 }
@@ -63,7 +64,9 @@ type AVRational struct {
 // See: https://ffmpeg.org/doxygen/trunk/structAVCodecParameters.html
 type AVCodecParameters struct {
 	CodecType          AVMediaType  // General type of the encoded data (see AVMediaType).
+	CodecTypeText      string       // General type as text
 	CodecID            CodecID      // Specific type of the encoded data (the codec used).
+	CodecIDText        string       // used codec as text
 	CodecTag           uint32       // Additional information about the codec (corresponds to the AVI FOURCC).
 	ExtradataSize      int          // Size of the extradata content in bytes.
 	NbCodedSideData    int          // Amount of entries in coded_side_data.
@@ -77,6 +80,7 @@ type AVCodecParameters struct {
 	Height             int          // Video only: height of the video frame.
 	AspectRatio        AVRational   // Video only: sample aspect ratio.
 	FieldOrder         AVFieldOrder // Video only: field order.
+	FieldOrderText     string       // Video only: field order as text
 	ColorRange         int          // Video only: color range.
 	ColorPrimaries     int32        // Video only: color primaries.
 	ColorTrc           int32        // Video only: color transfer characteristic.
@@ -123,17 +127,20 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 	for i := range num {
 		s := C.Get_stream_by_index(ctx, i)
 		codecParams := &AVCodecParameters{
-			CodecType:     AVMediaType(int(s.codecpar.codec_type)),
-			CodecID:       CodecID(int(s.codecpar.codec_id)),
-			BitRate:       int64(s.codecpar.bit_rate),
-			Width:         int(s.codecpar.width),
-			Height:        int(s.codecpar.height),
-			SampleRate:    int(s.codecpar.sample_rate),
-			ChannelLayout: int64(s.codecpar.channel_layout),
-			Channels:      int(s.codecpar.channels),
-			Format:        int(s.codecpar.format),
-			AspectRatio:   AVRational{Num: int(s.codecpar.sample_aspect_ratio.num), Den: int(s.codecpar.sample_aspect_ratio.den)},
-			FieldOrder:    AVFieldOrder(int(s.codecpar.field_order)),
+			CodecType:      AVMediaType(int(s.codecpar.codec_type)),
+			CodecTypeText:  AVMediaType(int(s.codecpar.codec_type)).String(),
+			CodecID:        CodecID(int(s.codecpar.codec_id)),
+			CodecIDText:    CodecID(int(s.codecpar.codec_id)).String(),
+			BitRate:        int64(s.codecpar.bit_rate),
+			Width:          int(s.codecpar.width),
+			Height:         int(s.codecpar.height),
+			SampleRate:     int(s.codecpar.sample_rate),
+			ChannelLayout:  int64(s.codecpar.channel_layout),
+			Channels:       int(s.codecpar.channels),
+			Format:         int(s.codecpar.format),
+			AspectRatio:    AVRational{Num: int(s.codecpar.sample_aspect_ratio.num), Den: int(s.codecpar.sample_aspect_ratio.den)},
+			FieldOrder:     AVFieldOrder(int(s.codecpar.field_order)),
+			FieldOrderText: AVFieldOrder(int(s.codecpar.field_order)).String(),
 			// ggf. weitere Felder
 		}
 		stream := AVStream{

@@ -38,7 +38,7 @@ func FormatBytes(bytes int64) string {
 
 // FormatDurationMS converts time in milliseconds to a human-readable string.
 // Hides hours if zero, hides minutes if both hours and minutes are zero.
-func FormatDurationMS(ms int64) string {
+func FormatDurationMS(ms uint64) string {
 	hours := ms / 3600000
 	ms = ms % 3600000
 	minutes := ms / 60000
