@@ -68,33 +68,33 @@ type AVCodecParameters struct {
 	CodecID            CodecID      // Specific type of the encoded data (the codec used).
 	CodecIDText        string       // used codec as text
 	CodecTag           uint32       // Additional information about the codec (corresponds to the AVI FOURCC).
-	ExtradataSize      int          `json:"extradata_size,omitzero"`     // Size of the extradata content in bytes.
-	NbCodedSideData    int          `json:"nb_coded_side_data,omitzero"` // Amount of entries in coded_side_data.
+	ExtradataSize      int          `json:"extradata_size,omitempty"`     // Size of the extradata content in bytes.
+	NbCodedSideData    int          `json:"nb_coded_side_data,omitempty"` // Amount of entries in coded_side_data.
 	Format             int          // The pixel or sample format.
 	BitRate            int64        // The average bitrate of the encoded data (in bits per second).
-	BitsPerCodedSample int          `json:"bits_per_coded_sample,omitzero"` // The number of bits per sample in the codedwords.
-	BitsPerRawSample   int          `json:"bits_per_raw_sample,omitzero"`   // This is the number of valid bits in each output sample.
-	Profile            int          `json:"profile,omitzero"`               // Codec-specific bitstream restrictions that the stream conforms to.
-	Level              int          `json:"level,omitzero"`                 // Codec-specific level.
-	Width              int          `json:"width,omitzero"`                 // Video only: width of the video frame.
-	Height             int          `json:"height,omitzero"`                // Video only: height of the video frame.
+	BitsPerCodedSample int          `json:"bits_per_coded_sample,omitempty"` // The number of bits per sample in the codedwords.
+	BitsPerRawSample   int          `json:"bits_per_raw_sample,omitempty"`   // This is the number of valid bits in each output sample.
+	Profile            int          `json:"profile,omitempty"`               // Codec-specific bitstream restrictions that the stream conforms to.
+	Level              int          `json:"level,omitempty"`                 // Codec-specific level.
+	Width              int          `json:"width,omitempty"`                 // Video only: width of the video frame.
+	Height             int          `json:"height,omitempty"`                // Video only: height of the video frame.
 	AspectRatio        AVRational   // Video only: sample aspect ratio.
 	FieldOrder         AVFieldOrder // Video only: field order.
 	FieldOrderText     string       // Video only: field order as text
-	ColorRange         int          `json:"color_range,omitzero"`      // Video only: color range.
-	ColorPrimaries     int32        `json:"color_primaries,omitzero"`  // Video only: color primaries.
-	ColorTrc           int32        `json:"color_trc,omitzero"`        // Video only: color transfer characteristic.
-	ColorSpace         int32        `json:"color_space,omitzero"`      // Video only: YUV colorspace type.
-	ChromaLocation     int32        `json:"chroma_location,omitzero"`  // Video only: location of chroma samples.
-	ChannelLayout      int64        `json:"channel_layout,omitzero"`   // Audio only: channel layout mask.
-	Channels           int          `json:"channels,omitzero"`         // Audio only: number of audio channels.
-	VideoDelay         int          `json:"video_delay,omitzero"`      // Video only: number of frames the decoder should delay.
-	SampleRate         int          `json:"sample_rate,omitzero"`      // Audio only: sampling rate.
-	BlockAlign         int          `json:"block_align,omitzero"`      // Audio only: block alignment.
-	FrameSize          int          `json:"frame_size,omitzero"`       // Audio only: audio frame size.
-	InitialPadding     int          `json:"initial_padding,omitzero"`  // Audio only: initial padding.
-	TrailingPadding    int          `json:"trailing_padding,omitzero"` // Audio only: trailing padding.
-	SeekPreroll        int          `json:"seek_preroll,omitzero"`     // Audio only: seek preroll.
+	ColorRange         int          `json:"color_range,omitempty"`      // Video only: color range.
+	ColorPrimaries     int32        `json:"color_primaries,omitempty"`  // Video only: color primaries.
+	ColorTrc           int32        `json:"color_trc,omitempty"`        // Video only: color transfer characteristic.
+	ColorSpace         int32        `json:"color_space,omitempty"`      // Video only: YUV colorspace type.
+	ChromaLocation     int32        `json:"chroma_location,omitempty"`  // Video only: location of chroma samples.
+	ChannelLayout      int64        `json:"channel_layout,omitempty"`   // Audio only: channel layout mask.
+	Channels           int          `json:"channels,omitempty"`         // Audio only: number of audio channels.
+	VideoDelay         int          `json:"video_delay,omitempty"`      // Video only: number of frames the decoder should delay.
+	SampleRate         int          `json:"sample_rate,omitempty"`      // Audio only: sampling rate.
+	BlockAlign         int          `json:"block_align,omitempty"`      // Audio only: block alignment.
+	FrameSize          int          `json:"frame_size,omitempty"`       // Audio only: audio frame size.
+	InitialPadding     int          `json:"initial_padding,omitempty"`  // Audio only: initial padding.
+	TrailingPadding    int          `json:"trailing_padding,omitempty"` // Audio only: trailing padding.
+	SeekPreroll        int          `json:"seek_preroll,omitempty"`     // Audio only: seek preroll.
 }
 
 // PrintAVContextJSON prints the AVFormatContext struct as formatted JSON to stdout.
@@ -127,9 +127,11 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 	for i := range num {
 		s := C.Get_stream_by_index(ctx, i)
 		cid := CodecID(int(s.codecpar.codec_id))
+		ctp := AVMediaType(int(s.codecpar.codec_type))
+		flo := AVFieldOrder(int(s.codecpar.field_order))
 		codecParams := &AVCodecParameters{
-			CodecType:      AVMediaType(int(s.codecpar.codec_type)),
-			CodecTypeText:  AVMediaType(int(s.codecpar.codec_type)).String(),
+			CodecType:      ctp,
+			CodecTypeText:  ctp.String(),
 			CodecID:        cid,
 			CodecIDText:    cid.String(),
 			BitRate:        int64(s.codecpar.bit_rate),
@@ -140,8 +142,8 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 			Channels:       int(s.codecpar.channels),
 			Format:         int(s.codecpar.format),
 			AspectRatio:    AVRational{Num: int(s.codecpar.sample_aspect_ratio.num), Den: int(s.codecpar.sample_aspect_ratio.den)},
-			FieldOrder:     AVFieldOrder(int(s.codecpar.field_order)),
-			FieldOrderText: AVFieldOrder(int(s.codecpar.field_order)).String(),
+			FieldOrder:     flo,
+			FieldOrderText: flo.String(),
 			// ggf. weitere Felder
 		}
 		stream := AVStream{
