@@ -1,4 +1,5 @@
 # go-mediafileinfo
+[![Go Reference](https://pkg.go.dev/badge/github.com/archeopternix/go-mediafileinfo.svg)](https://pkg.go.dev/github.com/archeopternix/go-mediafileinfo)
 
 A Go library for extracting detailed media file information using FFmpeg via cgo.  
 This package provides Go types and functions to access media stream metadata, including codecs, bitrates, durations, and more.
