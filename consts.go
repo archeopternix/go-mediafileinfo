@@ -1,6 +1,8 @@
 // Package mediafileinfo
 package mediafileinfo
 
+// AVMediaType represents the type of media stream (video, audio, etc). To get a textual representation call String() on the const
+//
 //go:generate stringer -type=AVMediaType -trimprefix=AVMEDIA_TYPE_
 type AVMediaType int
 
@@ -14,6 +16,13 @@ const (
 	AVMEDIA_TYPE_NB
 )
 
+// AVFieldOrder indicates a progressive video or describes the field order for interlaced video. To get a textual representation call String() on the const
+//   - PROGRESSIVE
+//   - TT: Top coded_first, top displayed first.
+//   - BB: Bottom coded first, bottom displayed first.
+//   - TB: Top coded first, bottom displayed first.
+//   - BT: Bottom coded first, top displayed first.
+//
 //go:generate stringer -type=AVFieldOrder -trimprefix=AV_FIELD_
 type AVFieldOrder int
 
@@ -26,6 +35,8 @@ const (
 	AV_FIELD_BT                              // Bottom coded first, top displayed first.
 )
 
+// CodecID identifies a codec by its integer ID. To get a textual representation call String() on the const
+//
 //go:generate stringer -type=CodecID -trimprefix=CODEC_ID_
 type CodecID int
 

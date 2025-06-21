@@ -2,9 +2,42 @@ package mediafileinfo
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
+	"strings"
 	"testing"
 )
+
+func TestAVCodecParameters_OmitZero(t *testing.T) {
+	params := AVCodecParameters{
+		Profile: 42,
+		// All other integer fields are zero and should be omitted
+		Width: 1024, // Should be present as omitempty is not set for omitzero
+	}
+
+	data, err := json.Marshal(params)
+	if err != nil {
+		t.Fatalf("json.Marshal failed: %v", err)
+	}
+	jsonStr := string(data)
+
+	// Should contain "profile"
+	if !strings.Contains(jsonStr, `"profile":42`) {
+		t.Errorf("Expected 'profile' to be present in JSON: %s", jsonStr)
+	}
+	// Should contain "width"
+	if !strings.Contains(jsonStr, `"width":1024`) {
+		t.Errorf("Expected 'width' to be present in JSON: %s", jsonStr)
+	}
+	// Should NOT contain "channels" (zero value)
+	if strings.Contains(jsonStr, `"channels"`) {
+		t.Errorf("Did not expect 'channels' in JSON: %s", jsonStr)
+	}
+	// Should NOT contain "frame_size" (zero value)
+	if strings.Contains(jsonStr, `"frame_size"`) {
+		t.Errorf("Did not expect 'frame_size' in JSON: %s", jsonStr)
+	}
+}
 
 // TestGetMediaInfo checks that GetMediaInfo returns a non-nil AVFormatContext for a valid file.
 // You should provide a valid test media file path for this test to pass.
