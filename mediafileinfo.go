@@ -17,6 +17,8 @@ import "C"
 import (
 	"encoding/json"
 	"fmt"
+	"os"
+	"path/filepath"
 	"unsafe"
 )
 
@@ -142,6 +144,14 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 		streams = append(streams, stream)
 	}
 
+	// Query file size and extension
+	var fileSize int64
+	var fileExt string
+	if fi, err := os.Stat(filename); err == nil {
+		fileSize = fi.Size()
+		fileExt = filepath.Ext(filename)
+	}
+
 	// Map to FormatContext
 	formatCtx := &AVFormatContext{
 		Filename:       C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
@@ -150,6 +160,8 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 		BitRate:        int64(ctx.bit_rate),
 		FormatName:     C.GoString(ctx.iformat.name),
 		FormatLongName: C.GoString(ctx.iformat.long_name),
+		FileSize:       fileSize,
+		FileExt:        fileExt,
 	}
 
 	return formatCtx, nil

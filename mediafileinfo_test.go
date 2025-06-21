@@ -8,7 +8,7 @@ import (
 // You should provide a valid test media file path for this test to pass.
 func TestGetMediaInfo(t *testing.T) {
 	// Replace with a valid test media file path accessible during testing
-	testFile := "testdata/sample.mp4"
+	testFile := "testdata/sample.avi"
 
 	info, err := GetMediaInfo(testFile)
 	if err != nil {
