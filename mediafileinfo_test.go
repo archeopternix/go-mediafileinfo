@@ -20,4 +20,7 @@ func TestGetMediaInfo(t *testing.T) {
 	if len(info.Streams) == 0 {
 		t.Error("Expected at least one stream in AVFormatContext")
 	}
+	if info.FormatLongName != "AVI (Audio Video Interleaved)" {
+		t.Errorf("Expected FormatLongName to be 'AVI (Audio Video Interleaved)', got '%s'", info.FormatLongName)
+	}
 }
