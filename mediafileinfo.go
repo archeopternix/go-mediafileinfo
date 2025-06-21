@@ -44,7 +44,7 @@ type AVRational struct {
 }
 
 // AVCodecParameters describes the properties of a single codec context.
-// Based on FFmpeg's AVCodecParameters (see avcodec.h).
+// See: https://ffmpeg.org/doxygen/trunk/structAVCodecParameters.html
 type AVCodecParameters struct {
 	CodecType          int        // General type of the encoded data (see AVMediaType).
 	CodecID            int        // Specific type of the encoded data (the codec used).
@@ -134,10 +134,12 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 
 	// Map to FormatContext
 	formatCtx := &AVFormatContext{
-		Filename: C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
-		Streams:  streams,
-		Duration: int64(ctx.duration),
-		BitRate:  int64(ctx.bit_rate),
+		Filename:   C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
+		Streams:    streams,
+		Duration:   int64(ctx.duration),
+		BitRate:    int64(ctx.bit_rate),
+		Format:     C.GoString(ctx.iformat.name),
+		FormatName: C.GoString(ctx.iformat.long_name),
 	}
 
 	if formatCtx == nil {
