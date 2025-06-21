@@ -3,7 +3,7 @@
 // FFmpeg's AVFormatContext, AVStream, and AVCodecParameters, and offers a function
 // to retrieve media metadata:
 //
-//	GetMediaInfo()
+//	GetMediaInfo(filename string) (*AVFormatContext, error)
 //
 // and a function to print all the mediafile metainfo in JSON format.
 package main
