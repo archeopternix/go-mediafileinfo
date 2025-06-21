@@ -1,4 +1,4 @@
-// Package main provides Go functions and structures for extracting
+// Package mediafileinfo provides Go functions and structures for extracting
 // media file information linking to the FFmpeg libraries by cgo. It defines types that mirror
 // FFmpeg's AVFormatContext, AVStream, and AVCodecParameters, and offers a function
 // to retrieve media metadata:
@@ -6,7 +6,7 @@
 //	GetMediaInfo(filename string) (*AVFormatContext, error)
 //
 // and a function to print all the mediafile metainfo in JSON format.
-package main
+package mediafileinfo
 
 /*
 #cgo LDFLAGS: -L. -lavformat -lavcodec -lavutil
@@ -150,10 +150,6 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 		BitRate:        int64(ctx.bit_rate),
 		FormatName:     C.GoString(ctx.iformat.name),
 		FormatLongName: C.GoString(ctx.iformat.long_name),
-	}
-
-	if formatCtx == nil {
-		return nil, fmt.Errorf("could not map context to format context for file: %s", filename)
 	}
 
 	return formatCtx, nil
