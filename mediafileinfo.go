@@ -126,11 +126,12 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 	var streams []AVStream
 	for i := range num {
 		s := C.Get_stream_by_index(ctx, i)
+		cid := CodecID(int(s.codecpar.codec_id))
 		codecParams := &AVCodecParameters{
 			CodecType:      AVMediaType(int(s.codecpar.codec_type)),
 			CodecTypeText:  AVMediaType(int(s.codecpar.codec_type)).String(),
-			CodecID:        CodecID(int(s.codecpar.codec_id)),
-			CodecIDText:    CodecID(int(s.codecpar.codec_id)).String(),
+			CodecID:        cid,
+			CodecIDText:    cid.String(),
 			BitRate:        int64(s.codecpar.bit_rate),
 			Width:          int(s.codecpar.width),
 			Height:         int(s.codecpar.height),
