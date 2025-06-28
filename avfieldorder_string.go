@@ -2,8 +2,6 @@
 
 package mediafileinfo
 
-import "strconv"
-
 func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
@@ -22,7 +20,7 @@ var _AVFieldOrder_index = [...]uint8{0, 7, 18, 20, 22, 24, 26}
 
 func (i AVFieldOrder) String() string {
 	if i < 0 || i >= AVFieldOrder(len(_AVFieldOrder_index)-1) {
-		return "AVFieldOrder(" + strconv.FormatInt(int64(i), 10) + ")"
+		return "UNKNOWN"
 	}
 	return _AVFieldOrder_name[_AVFieldOrder_index[i]:_AVFieldOrder_index[i+1]]
 }

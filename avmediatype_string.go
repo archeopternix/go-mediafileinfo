@@ -2,8 +2,6 @@
 
 package mediafileinfo
 
-import "strconv"
-
 func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
@@ -34,6 +32,6 @@ func (i AVMediaType) String() string {
 		i -= 1
 		return _AVMediaType_name_1[_AVMediaType_index_1[i]:_AVMediaType_index_1[i+1]]
 	default:
-		return "AVMediaType(" + strconv.FormatInt(int64(i), 10) + ")"
+		return _AVMediaType_name_0
 	}
 }
