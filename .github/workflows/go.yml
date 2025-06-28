@@ -31,3 +31,9 @@ jobs:
         files: coverage.out
         flags: unittests
         token: ${{ secrets.CODECOV_TOKEN }} # nur nötig für private Repos
+
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
