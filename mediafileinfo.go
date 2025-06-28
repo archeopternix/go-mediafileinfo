@@ -173,8 +173,9 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 	}
 
 	// Map to FormatContext
+	fname := filepath.Base(filename)
 	formatCtx := &AVFormatContext{
-		Filename:       C.GoString((*C.char)(unsafe.Pointer(&ctx.filename[0]))),
+		Filename:       fname,
 		Streams:        streams,
 		Duration:       uint64(ctx.duration) / avTimeBase,
 		DurationText:   FormatDurationMS(uint64(ctx.duration) / avTimeBase),
