@@ -1,3 +1,5 @@
+// Copyright 2025 archeopternix. All rights reserved. MIT license.
+
 #ifndef MEDIAINFOWRAPPER_H
 #define MEDIAINFOWRAPPER_H
 

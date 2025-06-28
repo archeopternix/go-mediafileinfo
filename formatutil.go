@@ -1,4 +1,5 @@
 // Package mediafileinfo
+// Copyright 2025 archeopternix. All rights reserved. MIT license.
 package mediafileinfo
 
 import (

@@ -1,4 +1,7 @@
-// Package mediafileinfo provides Go functions and structures for extracting
+// Package mediafileinfo
+// Copyright 2025 archeopternix. All rights reserved. MIT license.
+//
+// provides Go functions and structures for extracting
 // media file information linking to the FFmpeg libraries by cgo. It defines types that mirror
 // FFmpeg's AVFormatContext, AVStream, and AVCodecParameters, and offers a function
 // to retrieve media metadata:
@@ -6,6 +9,8 @@
 //	GetMediaInfo(filename string) (*AVFormatContext, error)
 //
 // and a function to print all the mediafile metainfo in JSON format.
+//
+
 package mediafileinfo
 
 /*

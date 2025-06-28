@@ -1,3 +1,5 @@
+// Copyright 2025 archeopternix. All rights reserved. MIT license.
+
 #include "mediainfowrapper.h"
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
