@@ -60,6 +60,12 @@ type AVRational struct {
 	Den int // Denominator
 }
 
+// String returns the AVRational as a string in the form "num:den" (e.g. "16:9").
+// This is useful for displaying aspect ratios or time bases in a human-readable format.
+func (a AVRational) String() string {
+	return fmt.Sprint(a.Num, ":", a.Den)
+}
+
 // AVCodecParameters describes the properties of a single codec context.
 // See: https://ffmpeg.org/doxygen/trunk/structAVCodecParameters.html
 type AVCodecParameters struct {
