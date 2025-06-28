@@ -8,6 +8,25 @@ import (
 	"testing"
 )
 
+func TestAVRational_String(t *testing.T) {
+	tests := []struct {
+		r    AVRational
+		want string
+	}{
+		{AVRational{Num: 16, Den: 9}, "16:9"},
+		{AVRational{Num: 1, Den: 1}, "1:1"},
+		{AVRational{Num: 0, Den: 1}, "0:1"},
+		{AVRational{Num: 3, Den: 2}, "3:2"},
+	}
+
+	for _, tt := range tests {
+		got := tt.r.String()
+		if got != tt.want {
+			t.Errorf("AVRational.String() = %q, want %q", got, tt.want)
+		}
+	}
+}
+
 func TestAVCodecParameters_OmitZero(t *testing.T) {
 	params := AVCodecParameters{
 		Profile: 42,
