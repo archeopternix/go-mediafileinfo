@@ -24,6 +24,11 @@ Install a C-compiler (e.g. gcc, mingw64..)
 go get github.com/archeopternix/go-mediafileinfo
 ```
 
+
+## Platform Support
+
+This package runs on all platforms that support [Go](https://go.dev/) and [FFmpeg](https://ffmpeg.org/), including Linux, macOS, and Windows (with appropriate FFmpeg and C compiler setup).
+
 ---
 
 ## Usage
