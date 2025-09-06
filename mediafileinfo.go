@@ -157,7 +157,7 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 			FieldOrderText: flo.String(),
 			// ggf. weitere Felder
 		}
-		sid := AVMediaType(int(s.id))
+
 		stream := AVStream{
 			Index:             int(s.index),
 			ID:                int(s.id),
