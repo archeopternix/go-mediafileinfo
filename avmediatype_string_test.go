@@ -18,6 +18,9 @@ func TestAVMediaType_String(t *testing.T) {
 		{AVMEDIA_TYPE_NB, "NB"},
 		{AVMediaType(99), "UNKNOWN"},
 		{AVMediaType(-2), "UNKNOWN"},
+		{AVMediaType(-1), "UNKNOWN"},
+		{AVMediaType(0), "VIDEO"},
+		{AVMediaType(1), "AUDIO"},
 	}
 
 	for _, tt := range tests {

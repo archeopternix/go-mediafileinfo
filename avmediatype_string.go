@@ -7,12 +7,12 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[AVMEDIA_TYPE_UNKNOWN - -1]
-	_ = x[AVMEDIA_TYPE_VIDEO-1]
-	_ = x[AVMEDIA_TYPE_AUDIO-2]
-	_ = x[AVMEDIA_TYPE_DATA-3]
-	_ = x[AVMEDIA_TYPE_SUBTITLE-4]
-	_ = x[AVMEDIA_TYPE_ATTACHMENT-5]
-	_ = x[AVMEDIA_TYPE_NB-6]
+	_ = x[AVMEDIA_TYPE_VIDEO-0]
+	_ = x[AVMEDIA_TYPE_AUDIO-1]
+	_ = x[AVMEDIA_TYPE_DATA-2]
+	_ = x[AVMEDIA_TYPE_SUBTITLE-3]
+	_ = x[AVMEDIA_TYPE_ATTACHMENT-4]
+	_ = x[AVMEDIA_TYPE_NB-5]
 }
 
 const (
@@ -28,8 +28,7 @@ func (i AVMediaType) String() string {
 	switch {
 	case i == -1:
 		return _AVMediaType_name_0
-	case 1 <= i && i <= 6:
-		i -= 1
+	case ((i >= 0) && (i <= 5)):
 		return _AVMediaType_name_1[_AVMediaType_index_1[i]:_AVMediaType_index_1[i+1]]
 	default:
 		return _AVMediaType_name_0

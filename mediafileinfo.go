@@ -36,13 +36,13 @@ type AVFormatContext struct {
 	FileExt        string     // File externsion e.g. mp4
 	FileSize       int64      // File size
 	FileSizeText   string     // File size in MB or GB
-	Streams        []AVStream // List of all streams in the file.
 	StartTime      int64      // Start time of the stream in AV_TIME_BASE units.
 	Duration       uint64     // Duration of the stream in AV_TIME_BASE units.
 	DurationText   string     // duration in hrs:min:sec.ms
 	BitRate        uint64     // Total bitrate of the file in bits per second.
 	FormatName     string     // Short name of the format.
 	FormatLongName string     // Long name of the format.
+	Streams        []AVStream // List of all streams in the file.
 }
 
 // AVStream represents a single stream (audio, video, subtitles, etc.) in a media file, similar to FFmpeg's AVStream.
@@ -50,12 +50,12 @@ type AVFormatContext struct {
 type AVStream struct {
 	Index             int                // Stream index in AVFormatContext.
 	ID                int                // Format-specific stream ID.
-	CodecParameters   *AVCodecParameters // Codec parameters for this stream.
 	TimeBase          AVRational         // Time base for the stream timestamps.
 	Duration          int64              // Duration of the stream in stream time_base units.
 	DurationText      string             // duration in hrs:min:sec.ms
 	SampleAspectRatio AVRational         // Sample aspect ratio (width/height) for video.
 	AverageFrameRate  AVRational         // Average frame rate.
+	CodecParameters   *AVCodecParameters // Codec parameters for this stream.
 }
 
 // AVRational represents a rational number, as used in FFmpeg for time bases and aspect ratios.
@@ -157,12 +157,14 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 			FieldOrderText: flo.String(),
 			// ggf. weitere Felder
 		}
+		sid := AVMediaType(int(s.id))
 		stream := AVStream{
 			Index:             int(s.index),
 			ID:                int(s.id),
 			CodecParameters:   codecParams,
 			TimeBase:          AVRational{Num: int(s.time_base.num), Den: int(s.time_base.den)},
 			Duration:          int64(s.duration),
+			DurationText:      FormatDurationMS(uint64(s.duration)),
 			SampleAspectRatio: AVRational{Num: int(s.sample_aspect_ratio.num), Den: int(s.sample_aspect_ratio.den)},
 			AverageFrameRate:  AVRational{Num: int(s.avg_frame_rate.num), Den: int(s.avg_frame_rate.den)},
 		}

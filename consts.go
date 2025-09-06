@@ -7,13 +7,13 @@ package mediafileinfo
 type AVMediaType int
 
 const (
-	AVMEDIA_TYPE_UNKNOWN AVMediaType = -1
-	AVMEDIA_TYPE_VIDEO   AVMediaType = iota
-	AVMEDIA_TYPE_AUDIO
-	AVMEDIA_TYPE_DATA
-	AVMEDIA_TYPE_SUBTITLE
-	AVMEDIA_TYPE_ATTACHMENT
-	AVMEDIA_TYPE_NB
+	AVMEDIA_TYPE_UNKNOWN    AVMediaType = -1
+	AVMEDIA_TYPE_VIDEO      AVMediaType = 0
+	AVMEDIA_TYPE_AUDIO      AVMediaType = 1
+	AVMEDIA_TYPE_DATA       AVMediaType = 2
+	AVMEDIA_TYPE_SUBTITLE   AVMediaType = 3
+	AVMEDIA_TYPE_ATTACHMENT AVMediaType = 4
+	AVMEDIA_TYPE_NB         AVMediaType = 5
 )
 
 // AVFieldOrder indicates a progressive video or describes the field order for interlaced video. To get a textual representation call String() on the const
