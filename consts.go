@@ -3,7 +3,7 @@ package mediafileinfo
 
 // AVMediaType represents the type of media stream (video, audio, etc). To get a textual representation call String() on the const
 //
-//go:generate stringer -type=AVMediaType -trimprefix=AVMEDIA_TYPE_
+//   Deactivated due to manual corrections go:generate stringer -type=AVMediaType -trimprefix=AVMEDIA_TYPE_
 type AVMediaType int
 
 const (
@@ -23,7 +23,7 @@ const (
 //   - TB: Top coded first, bottom displayed first.
 //   - BT: Bottom coded first, top displayed first.
 //
-//go:generate stringer -type=AVFieldOrder -trimprefix=AV_FIELD_
+// Deactivated due to manual corrections go:generate stringer -type=AVFieldOrder -trimprefix=AV_FIELD_
 type AVFieldOrder int
 
 const (
@@ -313,9 +313,11 @@ const (
 	CODEC_ID_RV60
 	CODEC_ID_JPEGXL_ANIM
 	CODEC_ID_APV
+)
 
+const (
 	// Audio codecs (start at 0x10000)
-	CODEC_ID_FIRST_AUDIO CodecID = 0x10000
+	CODEC_ID_FIRST_AUDIO CodecID = 0x10000 + iota
 	CODEC_ID_PCM_S16LE
 	CODEC_ID_PCM_S16BE
 	CODEC_ID_PCM_U16LE
@@ -353,9 +355,11 @@ const (
 	CODEC_ID_PCM_F24LE
 	CODEC_ID_PCM_VIDC
 	CODEC_ID_PCM_SGA
+)
 
+const (
 	// ADPCM codecs start at 0x11000
-	CODEC_ID_ADPCM_IMA_QT CodecID = 0x11000
+	CODEC_ID_ADPCM_IMA_QT CodecID = 0x11000 + iota
 	CODEC_ID_ADPCM_IMA_WAV
 	CODEC_ID_ADPCM_IMA_DK3
 	CODEC_ID_ADPCM_IMA_DK4
@@ -411,14 +415,16 @@ const (
 
 	// AMR codecs start at 0x12000
 	CODEC_ID_AMR_NB CodecID = 0x12000
-	CODEC_ID_AMR_WB
+	CODEC_ID_AMR_WB CodecID = 0x12001
 
 	// RealAudio codecs start at 0x13000
 	CODEC_ID_RA_144 CodecID = 0x13000
-	CODEC_ID_RA_288
+	CODEC_ID_RA_288 CodecID = 0x13001
+)
 
+const (
 	// DPCM codecs start at 0x14000
-	CODEC_ID_ROQ_DPCM CodecID = 0x14000
+	CODEC_ID_ROQ_DPCM CodecID = 0x14000 + iota
 	CODEC_ID_INTERPLAY_DPCM
 	CODEC_ID_XAN_DPCM
 	CODEC_ID_SOL_DPCM
@@ -427,9 +433,11 @@ const (
 	CODEC_ID_DERF_DPCM
 	CODEC_ID_WADY_DPCM
 	CODEC_ID_CBD2_DPCM
+)
 
+const (
 	// audio codecs start at 0x15000
-	CODEC_ID_MP2 CodecID = 0x15000
+	CODEC_ID_MP2 CodecID = 0x15000 + iota
 	CODEC_ID_MP3
 	CODEC_ID_AAC
 	CODEC_ID_AC3
@@ -536,9 +544,11 @@ const (
 	CODEC_ID_OSQ
 	CODEC_ID_QOA
 	CODEC_ID_LC3
+)
 
+const (
 	// Subtitle codecs (start at 0x17000)
-	CODEC_ID_FIRST_SUBTITLE CodecID = 0x17000
+	CODEC_ID_FIRST_SUBTITLE CodecID = 0x17000 + iota
 	CODEC_ID_DVD_SUBTITLE
 	CODEC_ID_DVB_SUBTITLE
 	CODEC_ID_TEXT
@@ -566,9 +576,11 @@ const (
 	CODEC_ID_TTML
 	CODEC_ID_ARIB_CAPTION
 	CODEC_ID_IVTV_VBI
+)
 
+const (
 	// Other/fake codecs (start at 0x18000)
-	CODEC_ID_FIRST_UNKNOWN CodecID = 0x18000
+	CODEC_ID_FIRST_UNKNOWN CodecID = 0x18000 + iota
 	CODEC_ID_TTF
 	CODEC_ID_SCTE_35
 	CODEC_ID_EPG
@@ -582,13 +594,15 @@ const (
 	CODEC_ID_BIN_DATA
 	CODEC_ID_SMPTE_2038
 	CODEC_ID_LCEVC
+)
 
+const (
 	// Special values
-	CODEC_ID_PROBE   CodecID = 0x19000
-	CODEC_ID_MPEG2TS CodecID = 0x20000
-	CODEC_ID_MPEG4SYSTEMS
-	CODEC_ID_FFMETADATA CodecID = 0x21000
-	CODEC_ID_WRAPPED_AVFRAME
-	CODEC_ID_VNULL
-	CODEC_ID_ANULL
+	CODEC_ID_PROBE           CodecID = 0x19000
+	CODEC_ID_MPEG2TS         CodecID = 0x20000
+	CODEC_ID_MPEG4SYSTEMS    CodecID = 0x20001
+	CODEC_ID_FFMETADATA      CodecID = 0x21000
+	CODEC_ID_WRAPPED_AVFRAME CodecID = 0x21001
+	CODEC_ID_VNULL           CodecID = 0x21002
+	CODEC_ID_ANULL           CodecID = 0x21003
 )

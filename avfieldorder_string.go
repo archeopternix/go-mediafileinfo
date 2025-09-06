@@ -19,7 +19,7 @@ const _AVFieldOrder_name = "UNKNOWNPROGRESSIVETTBBTBBT"
 var _AVFieldOrder_index = [...]uint8{0, 7, 18, 20, 22, 24, 26}
 
 func (i AVFieldOrder) String() string {
-	if i < 0 || i >= AVFieldOrder(len(_AVFieldOrder_index)-1) {
+	if (i < 0) || (i >= AVFieldOrder(len(_AVFieldOrder_index)-1)) {
 		return "UNKNOWN"
 	}
 	return _AVFieldOrder_name[_AVFieldOrder_index[i]:_AVFieldOrder_index[i+1]]
