@@ -16,10 +16,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version: '1.22' # oder deine Go-Version
-
-    - name: Install FFmpeg (Ubuntu)
-      run: sudo apt-get update && sudo apt-get install -y ffmpeg libavformat-dev libavutil-dev
+        go-version: '1.25' # oder deine Go-Version
 
     - name: Run tests with coverage
       run: |
