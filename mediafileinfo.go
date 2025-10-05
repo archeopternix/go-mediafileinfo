@@ -14,6 +14,7 @@
 package mediafileinfo
 
 /*
+#cgo CFLAGS: -I./source
 #cgo LDFLAGS: -L. -lavformat -lavcodec -lavutil
 #include "mediainfowrapper.h"
 #include <stdlib.h>
@@ -97,7 +98,6 @@ type AVCodecParameters struct {
 	ColorTrc           int32        `json:"color_trc,omitempty"`        // Video only: color transfer characteristic.
 	ColorSpace         int32        `json:"color_space,omitempty"`      // Video only: YUV colorspace type.
 	ChromaLocation     int32        `json:"chroma_location,omitempty"`  // Video only: location of chroma samples.
-	ChannelLayout      int64        `json:"channel_layout,omitempty"`   // Audio only: channel layout mask.
 	Channels           int          `json:"channels,omitempty"`         // Audio only: number of audio channels.
 	VideoDelay         int          `json:"video_delay,omitempty"`      // Video only: number of frames the decoder should delay.
 	SampleRate         int          `json:"sample_rate,omitempty"`      // Audio only: sampling rate.
@@ -106,6 +106,11 @@ type AVCodecParameters struct {
 	InitialPadding     int          `json:"initial_padding,omitempty"`  // Audio only: initial padding.
 	TrailingPadding    int          `json:"trailing_padding,omitempty"` // Audio only: trailing padding.
 	SeekPreroll        int          `json:"seek_preroll,omitempty"`     // Audio only: seek preroll.
+}
+
+type AVChannelLayout struct {
+	Order    int
+	Channels int
 }
 
 // PrintAVContextJSON prints the AVFormatContext struct as formatted JSON to stdout.
@@ -149,8 +154,7 @@ func GetMediaInfo(filename string) (*AVFormatContext, error) {
 			Width:          int(s.codecpar.width),
 			Height:         int(s.codecpar.height),
 			SampleRate:     int(s.codecpar.sample_rate),
-			ChannelLayout:  int64(s.codecpar.channel_layout),
-			Channels:       int(s.codecpar.channels),
+			Channels:       int(s.codecpar.ch_layout.nb_channels),
 			Format:         int(s.codecpar.format),
 			AspectRatio:    AVRational{Num: int(s.codecpar.sample_aspect_ratio.num), Den: int(s.codecpar.sample_aspect_ratio.den)},
 			FieldOrder:     flo,
