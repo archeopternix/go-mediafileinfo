@@ -16,7 +16,6 @@ package mediafileinfo
 
 /*
 #cgo CFLAGS: -I./source
-#cgo LDFLAGS: -L. -lavformat -lavcodec -lavutil
 #include "mediainfowrapper.h"
 #include <stdlib.h>
 */
