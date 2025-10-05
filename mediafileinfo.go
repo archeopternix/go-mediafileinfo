@@ -1,8 +1,9 @@
 // Package mediafileinfo
 // Copyright 2025 archeopternix. All rights reserved. MIT license.
 //
-// provides Go functions and structures for extracting
-// media file information linking to the FFmpeg libraries by cgo. It defines types that mirror
+// Usage of ffmpeg v8.0 from 08.2025
+// provides Go functions and structures for extracting  media file information
+// linking to the FFmpeg libraries by cgo. It defines types that mirror
 // FFmpeg's AVFormatContext, AVStream, and AVCodecParameters, and offers a function
 // to retrieve media metadata:
 //
